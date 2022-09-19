@@ -1,5 +1,6 @@
 const express = require('express');
-const frontEnd = require('./routes/frontend')
+const frontEnd = require('./routes/frontend');
+const api = require('./routes/api');
 
 
 const PORT = process.env.PORT || 3001;
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.use('/', frontEnd);
+app.use('/api', api);
 
 
 app.listen(PORT, () =>
