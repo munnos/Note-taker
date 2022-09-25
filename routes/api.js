@@ -1,14 +1,18 @@
 // This allows you to create off shoots of routes and then be like to server - use these routes
 const api = require("express").Router();
-const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
-const Notes = require('../db/db.json');
+const Notes = require('../helpers/fsUtils');
 
 
 // GET /api/notes should read the db.json file and return all saved notes as JSON.
 
 api.get('/api/notes', (req,res) => {
-    console.info(`${req.method} request received for notes`);
-    readFromFile('../db/db.json').then((data) => res.json(JSON.parse(data)));
+   Notes.retrieveNotes()
+   .then((notes) => {
+res.json(notes);
+   })
+   .catch((err) => {
+    res.status(503).json(err);
+   });
 
 });
 
@@ -16,22 +20,23 @@ api.get('/api/notes', (req,res) => {
 
 api.post('/api/notes', (req,res) => {
     console.info(`${req.method} request received to add a note`);
-    console.log(req.body);
-
-    const { note } = req.body;
-
-    if (req.body) {
-        const newNote = {
-            note,
-            note_id: uuid(),
-        };
-    readAndAppend(newNote, './db/db.json');
-    res.json(`Note added successfully`);
-    } else {
-        res.error(`Error in adding note`);
+    Notes.addNote(req.body)
+    .then((note) => {
+        res.json(note);
     }
-
-
+    )
+    .catch((err) => {
+        res.status(503).json(err);
+    });
 });
+
+    api.delete("notes/:id", (req,res) => {
+        Notes.deleteNote(req.params.id)
+        .then(() => res.json({ok: true}))
+        .catch((err) => res.status(503).json(err));
+
+    });
+
+
 
 module.exports = api;
