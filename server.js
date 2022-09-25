@@ -7,8 +7,10 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 // middleware
+// parses all of JSON - allows you to read it
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// this is serving up all of static files
 app.use(express.static('public'));
 
 app.use('/', frontEnd);

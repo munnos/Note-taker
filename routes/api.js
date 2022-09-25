@@ -1,6 +1,7 @@
+// This allows you to create off shoots of routes and then be like to server - use these routes
 const api = require("express").Router();
 const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
-const uuid = require("../")
+const Notes = require('../db/db.json');
 
 
 // GET /api/notes should read the db.json file and return all saved notes as JSON.
