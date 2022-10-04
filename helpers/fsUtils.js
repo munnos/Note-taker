@@ -12,10 +12,13 @@ class Notes {
     return readFromFile("../db/db.json", "utf8")
   }
   writeNote(note) {
-    return writeFile("../db/db.json", JSON.stringify(note))
-  }
+    return writeFile("../db/db.json", JSON.stringify(note));
+    
+  };
+  
 
- addNote(note) {
+ async addNote(note) {
+  
     const { title, text } = note;
 
     if (!title || !text) {
@@ -24,22 +27,20 @@ class Notes {
 
     const newNote = { title, text, id: uuidv4() }
 
-    return this.retrieveNotes()
-    .then(notes => [...notes,newNote])
-    .then(updatedNotes => this.writeNote(updatedNotes))
-    .then(() => this.newNote)
+    const notes = await this.retrieveNotes();
+   const updatedNotes = [...notes, newNote];
+   await this.writeNote(updatedNotes);
+   return this.newNote;
 
   }
-  retrieveNotes() {
-    return this.readNotes()
-    .then(notes => {
-      return JSON.parse(notes) || [];
-    })
+  async retrieveNotes() {
+    const notes = await this.readNotes();
+    return JSON.parse(notes) || [];
   }
-  deleteNote(id) {
-    return this.retrieveNotes()
-    .then(notes => notes.filter(note => note.id !== id))
-    .then(deleteNote => this.writeNote(deleteNote))
+  async deleteNote(id) {
+    const notes = await this.retrieveNotes();
+    const deleteNote = notes.filter(note => note.id !== id);
+    return await this.writeNote(deleteNote);
   }
 }
 
