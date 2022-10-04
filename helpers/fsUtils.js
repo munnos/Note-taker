@@ -12,8 +12,7 @@ class Notes {
     return readFromFile("../db/db.json", "utf8")
   }
   writeNote(note) {
-    return writeFile("../db/db.json", JSON.stringify(note));
-    
+    return writeFile("../db/db.json", JSON.stringify(note));   
   };
   
 
