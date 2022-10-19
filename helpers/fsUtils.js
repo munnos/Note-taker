@@ -1,6 +1,7 @@
 const fs = require('fs');
 const util = require('util');
-const uuidv4 = require('uuid'.v4);
+const uuid = require('uuid').v4;
+const path = require("path");
 
 
 const readFromFile = util.promisify(fs.readFile);
@@ -9,14 +10,14 @@ const writeFile = util.promisify(fs.writeFile);
 
 class Notes {
   readNotes() {
-    return readFromFile("../db/db.json", "utf8")
-  }
+    return readFromFile(path.join(__dirname, "../db/db.json"), "utf8");
+  };
   writeNote(note) {
-    return writeFile("../db/db.json", JSON.stringify(note));   
+    return writeFile(path.join(__dirname, "../db/db.json"), JSON.stringify(note));   
   };
   
 
- async addNote(note) {
+addNote(note) {
   
     const { title, text } = note;
 
@@ -24,22 +25,23 @@ class Notes {
       throw new Error("Please input a title and note")
     }
 
-    const newNote = { title, text, id: uuidv4() }
+    const newNote = { title, text, id: uuid() }
 
-    const notes = await this.retrieveNotes();
+    const notes = this.retrieveNotes();
    const updatedNotes = [...notes, newNote];
-   await this.writeNote(updatedNotes);
+    this.writeNote(updatedNotes);
    return this.newNote;
 
   }
-  async retrieveNotes() {
-    const notes = await this.readNotes();
-    return JSON.parse(notes) || [];
+  retrieveNotes() {
+    const notes = this.readNotes();
+    // JSON.parse(notes) || [];
+    return this.notes || [];
   }
-  async deleteNote(id) {
-    const notes = await this.retrieveNotes();
+  deleteNote(id) {
+    const notes =  this.retrieveNotes();
     const deleteNote = notes.filter(note => note.id !== id);
-    return await this.writeNote(deleteNote);
+    return this.writeNote(deleteNote);
   }
 }
 
