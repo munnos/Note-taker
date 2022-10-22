@@ -1,9 +1,10 @@
 const express = require('express');
-const frontEnd = require('./routes/frontend');
-const api = require('./routes/api');
+const api = require("./routes/api")
+const frontEnd = require("./routes/frontend");
 
 
-const PORT = process.env.PORT || 3001;
+
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 // middleware
@@ -13,8 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 // this is serving up all of static files
 app.use(express.static('public'));
 
-app.use('/', frontEnd);
 app.use('/api', api);
+app.use('/', frontEnd);
+
 
 
 app.listen(PORT, () =>

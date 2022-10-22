@@ -8,11 +8,12 @@ const writeFile = util.promisify(fs.writeFile);
 
 class Notes {
   readNotes() {
-    return readFromFile("../db/db.json", "utf8");
+    return readFromFile("../Note-taker/db/db.json", "utf8");
     
   }
   writeNote(note) {
-    return writeFile("../db/db.json", JSON.stringify(note));
+    return writeFile("../Note-taker/db/db.json", JSON.stringify(note));
+    // return writeFile("../Note-taker/db/db.json", JSON.stringify(note));
       // path.join(__dirname, "../db/db.json"), JSON.stringify(note));
       
 
@@ -34,17 +35,19 @@ class Notes {
       .then(() => this.newNote)
   }
 
-  retrieveNotes() {
+   retrieveNotes() {
     return this.readNotes()
     .then(notes => {
-      return JSON.parse(notes) || [];
+      // console.log(notes);
+      // return JSON.parse(notes) || [];
+      return notes || [];
     })
   }
 
   deleteNote(id) {
-    const notes = this.retrieveNotes();
-    const deleteNote = notes.filter((note) => note.id !== id);
-    return this.writeNote(deleteNote);
+    return this.retrieveNotes()
+    .then(notes => notes.filter(note => note.id !== id))
+    .then(filteredNote => this.writeNote(filteredNote))
   }
 }
 
