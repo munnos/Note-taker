@@ -3,6 +3,7 @@
 const fs = require("fs");
 const util = require("util");
 const uuid = require("uuid").v4;
+const dbJson = require("./db/db.json");
 
 const readFromFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
