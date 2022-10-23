@@ -1,23 +1,20 @@
+// Requiring fs package to write and read files and UUID for random ID numbers
+
 const fs = require("fs");
 const util = require("util");
 const uuid = require("uuid").v4;
-// const json = require("../db/db.json");
 
 const readFromFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
+// Functions within class to export for use in other files such as api.js
+
 class Notes {
   readNotes() {
     return readFromFile("../Note-taker/db/db.json", "utf8");
-    
   }
   writeNote(note) {
     return writeFile("../Note-taker/db/db.json", JSON.stringify(note));
-    // return writeFile("../Note-taker/db/db.json", JSON.stringify(note));
-      // path.join(__dirname, "../db/db.json"), JSON.stringify(note));
-      
-
-  
   }
 
   addNote(note) {
@@ -27,27 +24,24 @@ class Notes {
       throw new Error("Please input a title and note");
     }
 
-    const newNote = { title, text, id: uuid() }
+    const newNote = { title, text, id: uuid() };
 
     return this.retrieveNotes()
       .then((notes) => [...notes, newNote])
       .then((updatedNotes) => this.writeNote(updatedNotes))
-      .then(() => this.newNote)
+      .then(() => this.newNote);
   }
 
-   retrieveNotes() {
-    return this.readNotes()
-    .then(notes => {
-      // console.log(notes);
+  retrieveNotes() {
+    return this.readNotes().then((notes) => {
       return JSON.parse(notes) || [];
-      // return notes || [];
-    })
+    });
   }
 
   deleteNote(id) {
     return this.retrieveNotes()
-    .then(notes => notes.filter(note => note.id !== id))
-    .then(filteredNote => this.writeNote(filteredNote))
+      .then((notes) => notes.filter((note) => note.id !== id))
+      .then((filteredNote) => this.writeNote(filteredNote));
   }
 }
 
