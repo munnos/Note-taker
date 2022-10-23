@@ -22,16 +22,17 @@ api.post('/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
     Notes.addNote(req.body)
     console.log(req.body)
-    .then((note) => {
-       res.json(note);      
-    })
-    .catch((err) => {
-        res.status(503).json(err);
-    });
-    
-});
 
-api.delete("notes/:id", (req,res) => {
+       res.json(Notes);      
+    
+    if(err) {
+        res.status(503).json(err);
+    }
+});
+    
+
+
+api.delete("/notes/:id", (req,res) => {
         Notes.deleteNote(req.params.id)
         .then(() => res.json({ok: true}))
         .catch((err) => res.status(503).json(err));

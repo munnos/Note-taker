@@ -39,8 +39,8 @@ class Notes {
     return this.readNotes()
     .then(notes => {
       // console.log(notes);
-      // return JSON.parse(notes) || [];
-      return notes || [];
+      return JSON.parse(notes) || [];
+      // return notes || [];
     })
   }
 
