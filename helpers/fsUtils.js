@@ -12,10 +12,10 @@ const writeFile = util.promisify(fs.writeFile);
 
 class Notes {
   readNotes() {
-    return readFromFile("../Note-taker/db/db.json", "utf8");
+    return readFromFile("db/db.json", "utf8");
   }
   writeNote(note) {
-    return writeFile("../Note-taker/db/db.json", JSON.stringify(note));
+    return writeFile("db/db.json", JSON.stringify(note));
   }
 
   addNote(note) {
