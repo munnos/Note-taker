@@ -24,7 +24,7 @@ The application is hosted on Heroku. To run this locally clone the code in the r
 
 ## Usage
 
-Following the installation of inquirer, the application can be started by running "node index.js" in the command line. A hyperlink to the hosted URL will appear in the command line following this.
+For local installation, follow the steps under "installation. Once installed the application can be started by running "node index.js" in the command line. A hyperlink to the hosted URL will appear in the command line following this.
 
 ## Screenshot
 
